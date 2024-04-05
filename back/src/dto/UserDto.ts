@@ -1,7 +1,9 @@
 interface UserDto{
     name: string,
     email:string,
-    active:boolean
+    brithdate: string,
+    nDni: number,
+    credentialsId: number
 }
 
 export default UserDto

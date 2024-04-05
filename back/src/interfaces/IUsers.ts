@@ -2,7 +2,9 @@ interface IUser {
     id: number,
     name: string,
     email: string,
-    active: boolean
+    brithdate: string,
+    nDni: number,
+    credentialsId: number
 }
 
 export default IUser

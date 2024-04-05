@@ -5,14 +5,16 @@ import { getAllUsers } from "../controllers/User.Controller";
 
 let users: IUser[] = []
 
-let id: number = 1;
+export let id: number = 1;
 
 export const createUserService = async(userData: UserDto): Promise<IUser> => {
     const newUser: IUser = {
         id,
         name: userData.name,
         email: userData.email,
-        active: userData.active
+        brithdate: userData.brithdate,
+        nDni: userData.nDni,
+        credentialsId: userData.credentialsId
     }
     users.push(newUser)
     id++;
@@ -20,11 +22,15 @@ export const createUserService = async(userData: UserDto): Promise<IUser> => {
 }
 
 export const getUsersService = async (): Promise<IUser[]> => {
-    return users;
+    const allUsers: IUser[] = users
+    return allUsers;
 }
 
 export const getUserByIdService = async (id: number): Promise<IUser[] | null> => {
     try {
+        // const foundUser: IUser | undefined = users.find(user => user.id === id)
+        // if(!foundUser) throw Error ('No se encontro ningun usuario con ese id')
+        // return foundUser;
         // Busca el usuario por su ID en la base de datos
         const user = await getUserByIdService(id)
         
@@ -42,3 +48,4 @@ export const deleteUserService = async(id: number) : Promise<void> => {
     return user.id !== id
 })
 }
+

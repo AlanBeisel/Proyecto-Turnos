@@ -1,11 +1,16 @@
 import { Request, Response } from "express"
 import { createUserService, getUsersService, deleteUserService, getUserByIdService } from "../services/userService"
 import IUser from "../interfaces/IUsers";
+import ICredential from "../interfaces/ICredential";
+import { createCredentialService } from "../services/credentialService";
+
 
 export const createUser = async(req:Request, res: Response) => {
-    const {name, email, active} = req.body;
-    const newUser: IUser = await createUserService({name, email, active})
-    res.status(201).json(newUser)
+    const {name, email, brithdate, nDni, credentialsId, username, password } = req.body;
+    const newUser: IUser = await createUserService({name, email, brithdate, nDni, credentialsId })
+    const newCredential: ICredential = await createCredentialService({username, password})
+    const resp= {newUser, newCredential}
+    res.status(201).json(resp)
 }
 
 export const getAllUsers = async (req:Request, res: Response) => {
@@ -31,6 +36,8 @@ export const getUserById = async (req: Request, res: Response) => {
         res.status(500).json({error: 'Hubo un error al obtener usuario por ID'});
     }
 };
+
+
 
 
 

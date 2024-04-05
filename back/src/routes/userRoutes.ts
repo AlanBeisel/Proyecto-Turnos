@@ -14,6 +14,8 @@ router.delete("/", deleteUser)
 
 router.get("/:id", getUserById)
 
+router.get("/login",)
+
 
 
 export default router;
