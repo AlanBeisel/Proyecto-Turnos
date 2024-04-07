@@ -1,8 +1,15 @@
+import { AppointmentModel, UserModel } from "../config/data-source";
+import AppointmentDto from "../dto/AppointmentDto";
+import { Appointment } from "../entities/Appointments";
 import IAppointment from "../interfaces/IAppointments"; // Suponiendo que tienes esta interfaz para las citas
 
-export const getAllAppointmentsService = async (): Promise<IAppointment[]> => {
+export const getAllAppointmentsService = async (): Promise<Appointment[]> => {
     try {
-        const appointments: IAppointment[] = [];
+        const appointments = await AppointmentModel.find({
+            relations: {
+                user: true
+            }
+        });
         return appointments;
     } catch (error) {
         console.error('Error al obtener listado de citas en el servicio:', error);
@@ -21,8 +28,18 @@ export const getAppointmentByIdService = async (id: number): Promise<IAppointmen
     }
 };
 
-export const scheduleAppointmentService = async (): Promise<void> => {
-    // Lógica para agendar una nueva cita en la base de datos
+export const scheduleAppointmentService = async (appointment: AppointmentDto): Promise<Appointment> => {
+    const newAppointment= await AppointmentModel.create(appointment);
+    await AppointmentModel.save(newAppointment);
+
+    const user = await UserModel.findOneBy({
+        id: appointment.usuarioId
+    })
+    if (user) {
+    newAppointment.user= user;
+            AppointmentModel.save(newAppointment);
+        }
+    return newAppointment;
 };
 
 export const cancelAppointmentService = async (): Promise<void> => {

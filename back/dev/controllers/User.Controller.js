@@ -13,9 +13,9 @@ exports.deleteUser = exports.getUserById = exports.getAllUsers = exports.createU
 const userService_1 = require("../services/userService");
 const credentialService_1 = require("../services/credentialService");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, brithdate, nDni, credentialsId, username, password } = req.body;
-    const newUser = yield (0, userService_1.createUserService)({ name, email, brithdate, nDni, credentialsId });
-    const newCredential = yield (0, credentialService_1.createCredentialService)({ username, password });
+    const { name, email, brithdate, nDni, username, password, userId } = req.body;
+    const newUser = yield (0, userService_1.createUserService)({ name, email, brithdate, nDni });
+    const newCredential = yield (0, credentialService_1.createCredentialService)({ username, password, userId });
     const resp = { newUser, newCredential };
     res.status(201).json(resp);
 });
@@ -34,7 +34,7 @@ exports.getAllUsers = getAllUsers;
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const user = yield (0, userService_1.getUserByIdService)(parseInt(id));
+        const user = yield (0, userService_1.getUserByIdService)(Number(id));
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }

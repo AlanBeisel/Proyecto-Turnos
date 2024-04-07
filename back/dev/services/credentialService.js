@@ -9,20 +9,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.credentialService = exports.createCredentialService = exports.credential = void 0;
-const userService_1 = require("./userService");
-exports.credential = [];
-const createCredentialService = (credentialDato) => __awaiter(void 0, void 0, void 0, function* () {
-    const newCredential = {
-        id: userService_1.id - 1,
-        username: credentialDato.username,
-        password: credentialDato.username
-    };
-    exports.credential.push(newCredential);
+exports.createCredentialService = void 0;
+const data_source_1 = require("../config/data-source");
+const createCredentialService = (credential) => __awaiter(void 0, void 0, void 0, function* () {
+    const newCredential = yield data_source_1.CredentialModel.create(credential);
+    yield data_source_1.CredentialModel.save(newCredential);
+    const user = yield data_source_1.UserModel.findOneBy({ id: credential.userId });
+    if (user) {
+        user.credential = newCredential;
+        yield data_source_1.UserModel.save(user);
+    }
+    else {
+        throw Error("usuario inexistente");
+    }
     return newCredential;
 });
 exports.createCredentialService = createCredentialService;
-const credentialService = () => __awaiter(void 0, void 0, void 0, function* () {
-    return exports.credential;
-});
-exports.credentialService = credentialService;
+// export const credential: ICredential[]=[]
+// export const createCredentialService = async (credentialDato: ICredentialDto): Promise<ICredential> => {
+//     const newCredential:ICredential = {
+//         id: id - 1,
+//         username:credentialDato.username,
+//         password:credentialDato.password
+//     }
+//     credential.push(newCredential)
+//     return newCredential;
+// }
+// export const credentialService = async (params: ICredentialDto) => {
+//     const {username, password} = params;
+//     const foundCredentials= credential.find(
+//         (credential) => credential.username === username && credential.password == password
+//     )
+//     if(foundCredentials && foundCredentials.username === username && foundCredentials.password === password) {
+//         return foundCredentials.id
+//     } else {
+//         throw Error("Credential incorrect")
+//     }
+// }

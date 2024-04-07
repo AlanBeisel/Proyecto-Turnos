@@ -12,9 +12,9 @@ router.post("/register", createUser)
 
 router.delete("/", deleteUser)
 
-router.get("/:id", getUserById)
+router.get("/id/:id", getUserById)
 
-router.get("/login",)
+// router.get("/login",)
 
 
 

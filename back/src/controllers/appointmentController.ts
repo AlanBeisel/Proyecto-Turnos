@@ -27,8 +27,15 @@ export const getAppointmentById = async (req: Request, res: Response) => {
 
 export const scheduleAppointment = async (req: Request, res: Response) => {
     try {
-        // Lógica para agendar una nueva cita
-        res.status(201).json({ message: 'Cita agendada exitosamente' });
+        const {usuarioId, date, time, status, descripcion} = req.body;
+        const newAppointment = await scheduleAppointmentService({
+            usuarioId,
+            date,
+            time,
+            status,
+            descripcion
+        })
+        res.status(201).json(newAppointment);
     } catch (error) {
         console.error('Error al agendar cita:', error);
         res.status(500).json({ error: 'Hubo un error al agendar cita.' });
@@ -37,7 +44,6 @@ export const scheduleAppointment = async (req: Request, res: Response) => {
 
 export const cancelAppointment = async (req: Request, res: Response) => {
     try {
-        // Lógica para cancelar una cita
         res.status(200).json({ message: 'Cita cancelada exitosamente' });
     } catch (error) {
         console.error('Error al cancelar cita:', error);

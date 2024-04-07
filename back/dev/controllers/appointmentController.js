@@ -39,8 +39,15 @@ const getAppointmentById = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.getAppointmentById = getAppointmentById;
 const scheduleAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Lógica para agendar una nueva cita
-        res.status(201).json({ message: 'Cita agendada exitosamente' });
+        const { usuarioId, date, time, status, descripcion } = req.body;
+        const newAppointment = yield (0, appointmentsService_1.scheduleAppointmentService)({
+            usuarioId,
+            date,
+            time,
+            status,
+            descripcion
+        });
+        res.status(201).json(newAppointment);
     }
     catch (error) {
         console.error('Error al agendar cita:', error);

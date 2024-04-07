@@ -10,38 +10,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserService = exports.getUserByIdService = exports.getUsersService = exports.createUserService = exports.id = void 0;
+const data_source_1 = require("../config/data-source");
 let users = [];
 exports.id = 1;
 const createUserService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    const newUser = {
-        id: exports.id,
-        name: userData.name,
-        email: userData.email,
-        brithdate: userData.brithdate,
-        nDni: userData.nDni,
-        credentialsId: userData.credentialsId
-    };
-    users.push(newUser);
-    exports.id++;
+    const newUser = yield data_source_1.UserModel.create(userData);
+    const result = yield data_source_1.UserModel.save(newUser);
     return newUser;
 });
 exports.createUserService = createUserService;
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    return users;
+    const allUsers = yield data_source_1.UserModel.find();
+    return allUsers;
 });
 exports.getUsersService = getUsersService;
 const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // Busca el usuario por su ID en la base de datos
-        const user = yield (0, exports.getUserByIdService)(id);
-        // Devuelve el usuario encontrado o null si no existe
-        return user;
-    }
-    catch (error) {
-        // Si ocurre un error, lóguelo y maneje de manera apropiada
-        console.error('Error al obtener usuario por ID en el servicio:', error);
-        throw new Error('Error al obtener usuario por ID en el servicio');
-    }
+    const user = yield data_source_1.UserModel.findOneBy({ id });
+    return user;
 });
 exports.getUserByIdService = getUserByIdService;
 const deleteUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
