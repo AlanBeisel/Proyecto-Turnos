@@ -13,7 +13,11 @@ exports.cancelAppointmentService = exports.scheduleAppointmentService = exports.
 const data_source_1 = require("../config/data-source");
 const getAllAppointmentsService = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const appointments = [];
+        const appointments = yield data_source_1.AppointmentModel.find({
+            relations: {
+                user: true
+            }
+        });
         return appointments;
     }
     catch (error) {
@@ -24,8 +28,10 @@ const getAllAppointmentsService = () => __awaiter(void 0, void 0, void 0, functi
 exports.getAllAppointmentsService = getAllAppointmentsService;
 const getAppointmentByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Lógica para obtener una cita por su ID desde la base de datos
-        const appointment = null;
+        const appointment = yield data_source_1.AppointmentModel.findOne({ relations: ['user'] });
+        if (!appointment) {
+            return null;
+        }
         return appointment;
     }
     catch (error) {
@@ -35,26 +41,41 @@ const getAppointmentByIdService = (id) => __awaiter(void 0, void 0, void 0, func
 });
 exports.getAppointmentByIdService = getAppointmentByIdService;
 const scheduleAppointmentService = (appointment) => __awaiter(void 0, void 0, void 0, function* () {
-    const newAppointment = yield data_source_1.AppointmentModel.create(appointment);
-    yield data_source_1.AppointmentModel.save(newAppointment);
-    const user = yield data_source_1.UserModel.findOneBy({ id: appointment.usuarioId });
-    if (user) {
-        // Si user.appointments no está inicializado, inicialízalo como un arreglo vacío
-        if (!user.appointments) {
-            user.appointments = [];
-        }
-        // Agrega el nuevo appointment al arreglo de appointments del usuario
-        user.appointments.push(newAppointment);
-        // Guarda los cambios en el usuario
-        yield data_source_1.UserModel.save(user);
+    const queryRunner = data_source_1.AppDataSource.createQueryRunner();
+    yield queryRunner.connect();
+    try {
+        queryRunner.startTransaction();
+        const newAppointment = yield data_source_1.AppointmentModel.create(appointment);
+        yield queryRunner.manager.save(newAppointment);
+        const user = yield data_source_1.UserModel.findOneBy({ id: appointment.usuarioId });
+        if (!user)
+            throw Error("Usuario inexistente. No se creo la cita");
+        newAppointment.user = user;
+        yield queryRunner.manager.save(newAppointment);
+        yield queryRunner.commitTransaction();
+        return newAppointment;
     }
-    else {
-        throw new Error("Usuario inexistente");
+    catch (error) {
+        yield queryRunner.rollbackTransaction();
+        throw Error("usuario inexistente, no se creo la cita");
     }
-    return newAppointment;
+    finally {
+        yield queryRunner.release();
+    }
 });
 exports.scheduleAppointmentService = scheduleAppointmentService;
-const cancelAppointmentService = () => __awaiter(void 0, void 0, void 0, function* () {
-    // Lógica para cancelar una cita en la base de datos
+const cancelAppointmentService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const appointment = yield data_source_1.AppointmentModel.findOne({});
+        if (!appointment) {
+            throw new Error('La cita no existe');
+        }
+        appointment.status = 'canceled';
+        yield data_source_1.AppointmentModel.save(appointment);
+    }
+    catch (error) {
+        console.error('Error al cancelar cita en el servicio:', error);
+        throw new Error('Hubo un error al cancelar cita en el servicio.');
+    }
 });
 exports.cancelAppointmentService = cancelAppointmentService;

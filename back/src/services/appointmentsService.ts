@@ -1,7 +1,7 @@
-import { AppointmentModel, UserModel } from "../config/data-source";
+import { AppDataSource, AppointmentModel, UserModel } from "../config/data-source";
 import AppointmentDto from "../dto/AppointmentDto";
 import { Appointment } from "../entities/Appointments";
-import IAppointment from "../interfaces/IAppointments"; // Suponiendo que tienes esta interfaz para las citas
+
 
 export const getAllAppointmentsService = async (): Promise<Appointment[]> => {
     try {
@@ -17,10 +17,13 @@ export const getAllAppointmentsService = async (): Promise<Appointment[]> => {
     }
 };
 
-export const getAppointmentByIdService = async (id: number): Promise<IAppointment | null> => {
+export const getAppointmentByIdService = async (id: number): Promise<Appointment | null> => {
     try {
-        // Lógica para obtener una cita por su ID desde la base de datos
-        const appointment: IAppointment | null = null;
+        const appointment = await AppointmentModel.findOneBy({id});
+        
+        if (!appointment) {
+            return null;
+        }
         return appointment;
     } catch (error) {
         console.error('Error al obtener cita por ID en el servicio:', error);
@@ -28,20 +31,40 @@ export const getAppointmentByIdService = async (id: number): Promise<IAppointmen
     }
 };
 
-export const scheduleAppointmentService = async (appointment: AppointmentDto): Promise<Appointment> => {
-    const newAppointment= await AppointmentModel.create(appointment);
-    await AppointmentModel.save(newAppointment);
+export const scheduleAppointmentService = async (appointment: AppointmentDto): Promise<Appointment | void> => {
+    const queryRunner = AppDataSource.createQueryRunner()
+    await queryRunner.connect();
 
-    const user = await UserModel.findOneBy({
-        id: appointment.usuarioId
-    })
-    if (user) {
-    newAppointment.user= user;
-            AppointmentModel.save(newAppointment);
+    try {
+    queryRunner.startTransaction()
+
+
+    const newAppointment = await AppointmentModel.create(appointment)
+    await queryRunner.manager.save(newAppointment)
+
+    const user = await UserModel.findOneBy({id: appointment.usuarioId})
+
+    if(!user) throw Error("Usuario inexistente. No se creo la cita")
+    
+        newAppointment.user = user;
+        await queryRunner.manager.save(newAppointment);
+
+        await queryRunner.commitTransaction();
+
+        return newAppointment;
+    } catch(error) {
+        await queryRunner.rollbackTransaction()
+        throw Error("usuario inexistente, no se creo la cita")
+    }finally {
+        await queryRunner.release()
+}
+};
+
+export const cancelAppointmentService = async (id: number) => {
+        const appointment = await AppointmentModel.findOneBy({id});
+        if (appointment) {
+            appointment.status = 'canceled'; 
+            await AppointmentModel.save(appointment);
         }
-    return newAppointment;
-};
-
-export const cancelAppointmentService = async (): Promise<void> => {
-    // Lógica para cancelar una cita en la base de datos
-};
+        
+    }

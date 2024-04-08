@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { createUserService, getUsersService, deleteUserService, getUserByIdService } from "../services/userService"
+import { createUserService, getUsersService, getUserByIdService } from "../services/userService"
 import { createCredentialService } from "../services/credentialService";
 import { User } from "../entities/Users";
 import { Credential } from "../entities/Credentials";
@@ -37,12 +37,27 @@ export const getUserById = async (req: Request, res: Response) => {
     }
 };
 
+// export const loginUser = async (req: Request, res: Response): Promise<void> => {
+//     try {
+//         const { username, password } = req.body;
+//         const result = await loginUserService(username, password);
 
-
-
-
-export const deleteUser = async(req:Request, res: Response) => {
-    const {id} = req.body
-    await deleteUserService(id)
-    res.status(200).json({message: "Eliminado correctamente"})
-}
+//         if (result.login) {
+//             res.status(200).json({
+//                 login: true,
+//                 user: result.user
+//             });
+//         } else {
+//             res.status(400).json({
+//                 login: false,
+//                 message: 'Credenciales incorrectas'
+//             });
+//         }
+//     } catch (error) {
+//         console.error('Error al iniciar sesión:', error);
+//         res.status(500).json({
+//             login: false,
+//             message: 'Hubo un error al iniciar sesión'
+//         });
+//     }
+// };

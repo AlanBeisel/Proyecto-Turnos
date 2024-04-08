@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
 import UserDto from "../dto/UserDto";
 import IUser from "../interfaces/IUsers"
 import {UserModel } from "../config/data-source";
 import { User } from "../entities/Users";
+
 
 let users: IUser[] = []
 
@@ -25,13 +25,13 @@ export const getUsersService = async (): Promise<User[]> => {
 }
 
 export const getUserByIdService = async (id: number): Promise<User | null> => {
-        const user = await UserModel.findOneBy({id})
+        const user = await UserModel.findOne({where:{
+            id
+        }, relations: {
+            appointments: true
+        }})
         return user;
 };
 
-export const deleteUserService = async(id: number) : Promise<void> => {
-    users = users.filter((user: IUser) => {
-    return user.id !== id
-})
-}
+
 

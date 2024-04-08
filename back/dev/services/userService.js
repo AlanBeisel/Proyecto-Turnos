@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserService = exports.getUserByIdService = exports.getUsersService = exports.createUserService = exports.id = void 0;
+exports.getUserByIdService = exports.getUsersService = exports.createUserService = exports.id = void 0;
 const data_source_1 = require("../config/data-source");
 let users = [];
 exports.id = 1;
@@ -20,18 +20,35 @@ const createUserService = (userData) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.createUserService = createUserService;
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const allUsers = yield data_source_1.UserModel.find();
+    const allUsers = yield data_source_1.UserModel.find({
+        relations: {
+            appointments: true
+        }
+    });
     return allUsers;
 });
 exports.getUsersService = getUsersService;
 const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield data_source_1.UserModel.findOneBy({ id });
+    const user = yield data_source_1.UserModel.findOne({ where: {
+            id
+        }, relations: {
+            appointments: true
+        } });
     return user;
 });
 exports.getUserByIdService = getUserByIdService;
-const deleteUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    users = users.filter((user) => {
-        return user.id !== id;
-    });
-});
-exports.deleteUserService = deleteUserService;
+// export const loginUserService = async (username: string, password: string): Promise<{ login: boolean, user?: User }> => {
+//     try {
+//         // Buscar el usuario por su nombre de usuario
+//         const user = await UserModel.findOne(username);
+//         // Verificar si el usuario existe y la contraseña coincide
+//         if (user && user.password === password) {
+//             return { login: true, user };
+//         } else {
+//             return { login: false };
+//         }
+//     } catch (error) {
+//         console.error('Error al iniciar sesión en el servicio:', error);
+//         throw new Error('Hubo un error al iniciar sesión en el servicio.');
+//     }
+// };

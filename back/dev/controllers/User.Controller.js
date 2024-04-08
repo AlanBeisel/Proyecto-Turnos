@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
+exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
 const userService_1 = require("../services/userService");
 const credentialService_1 = require("../services/credentialService");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,9 +46,26 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getUserById = getUserById;
-const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.body;
-    yield (0, userService_1.deleteUserService)(id);
-    res.status(200).json({ message: "Eliminado correctamente" });
-});
-exports.deleteUser = deleteUser;
+// export const loginUser = async (req: Request, res: Response): Promise<void> => {
+//     try {
+//         const { username, password } = req.body;
+//         const result = await loginUserService(username, password);
+//         if (result.login) {
+//             res.status(200).json({
+//                 login: true,
+//                 user: result.user
+//             });
+//         } else {
+//             res.status(400).json({
+//                 login: false,
+//                 message: 'Credenciales incorrectas'
+//             });
+//         }
+//     } catch (error) {
+//         console.error('Error al iniciar sesión:', error);
+//         res.status(500).json({
+//             login: false,
+//             message: 'Hubo un error al iniciar sesión'
+//         });
+//     }
+// };

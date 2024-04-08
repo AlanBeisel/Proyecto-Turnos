@@ -44,7 +44,8 @@ __decorate([
     __metadata("design:type", Credentials_1.Credential)
 ], User.prototype, "credential", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Appointments_1.Appointment, appointment => appointment.usuarioId),
+    (0, typeorm_1.OneToMany)(() => Appointments_1.Appointment, (appointment => appointment.user)),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], User.prototype, "appointments", void 0);
 exports.User = User = __decorate([

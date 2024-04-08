@@ -38,8 +38,8 @@ const getAppointmentById = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.getAppointmentById = getAppointmentById;
 const scheduleAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuarioId, date, time, status, descripcion } = req.body;
     try {
-        const { usuarioId, date, time, status, descripcion } = req.body;
         const newAppointment = yield (0, appointmentsService_1.scheduleAppointmentService)({
             usuarioId,
             date,
@@ -50,14 +50,12 @@ const scheduleAppointment = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(201).json(newAppointment);
     }
     catch (error) {
-        console.error('Error al agendar cita:', error);
         res.status(500).json({ error: 'Hubo un error al agendar cita.' });
     }
 });
 exports.scheduleAppointment = scheduleAppointment;
 const cancelAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Lógica para cancelar una cita
         res.status(200).json({ message: 'Cita cancelada exitosamente' });
     }
     catch (error) {

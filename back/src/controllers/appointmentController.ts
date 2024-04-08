@@ -26,8 +26,8 @@ export const getAppointmentById = async (req: Request, res: Response) => {
 };
 
 export const scheduleAppointment = async (req: Request, res: Response) => {
+    const {usuarioId, date, time, status, descripcion} = req.body;
     try {
-        const {usuarioId, date, time, status, descripcion} = req.body;
         const newAppointment = await scheduleAppointmentService({
             usuarioId,
             date,
@@ -37,16 +37,18 @@ export const scheduleAppointment = async (req: Request, res: Response) => {
         })
         res.status(201).json(newAppointment);
     } catch (error) {
-        console.error('Error al agendar cita:', error);
         res.status(500).json({ error: 'Hubo un error al agendar cita.' });
     }
 };
 
-export const cancelAppointment = async (req: Request, res: Response) => {
+export const cancelAppointmentController = async (req: Request, res: Response) => {
     try {
-        res.status(200).json({ message: 'Cita cancelada exitosamente' });
+        const { id } = req.params;
+
+        await cancelAppointmentService(parseInt(id));
+
+        res.status(200).json({ message: 'La cita ha sido cancelada exitosamente.' });
     } catch (error) {
-        console.error('Error al cancelar cita:', error);
-        res.status(500).json({ error: 'Hubo un error al cancelar cita.' });
+        res.status(500).json({ error: 'Hubo un error al cancelar la cita.' });
     }
 };
