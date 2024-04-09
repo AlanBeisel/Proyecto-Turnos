@@ -1,10 +1,8 @@
 import UserDto from "../dto/UserDto";
-import IUser from "../interfaces/IUsers"
-import {UserModel } from "../config/data-source";
+import {UserModel} from "../config/data-source";
 import { User } from "../entities/Users";
 
 
-let users: IUser[] = []
 
 export let id: number = 1;
 
@@ -33,5 +31,10 @@ export const getUserByIdService = async (id: number): Promise<User | null> => {
         return user;
 };
 
-
-
+export const loginUserService = async (username: string, password: string): Promise<{ login: boolean, user?: User }> => {
+    const user = await UserModel.findOne({ where: { credential: { username } }, relations: ['credential'] });
+    if (user && user.credential.password === password) {
+        return { login: true, user };
+    }
+    return { login: false };
+};
