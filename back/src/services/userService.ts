@@ -1,6 +1,8 @@
 import UserDto from "../dto/UserDto";
 import {UserModel} from "../config/data-source";
 import { User } from "../entities/Users";
+import { Credential } from "../entities/Credentials";
+import { createCredentialService } from "./credentialService";
 
 
 
@@ -9,6 +11,7 @@ export let id: number = 1;
 export const createUserService = async(userData: UserDto) => {
     const newUser = await UserModel.create(userData)
     const result = await UserModel.save(newUser);
+    
     return newUser
 }
 

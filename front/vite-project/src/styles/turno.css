@@ -1,0 +1,13 @@
+.turno-container {
+    border: 1px solid #ccc; /* Borde para el contenedor del turno */
+    padding: 10px; /* Espaciado interno */
+    margin-bottom: 10px; /* Espaciado inferior */
+  }
+  
+  .fecha, .duracion, .estado, .descripcion {
+    margin-bottom: 5px; /* Espaciado entre cada elemento */
+  }
+  
+  .fecha {
+    font-weight: bold; /* Estilo para la fecha */
+  }
