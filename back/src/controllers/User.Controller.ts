@@ -5,13 +5,18 @@ import { User } from "../entities/Users";
 import { Credential } from "../entities/Credentials";
 
 
-export const createUser = async(req:Request, res: Response) => {
-    const {name, email, brithdate, nDni, username, password, userId } = req.body;
-    const newUser: User = await createUserService({name, email, brithdate, nDni})
-    const newCredential: Credential = await createCredentialService({username, password, userId})
-    const resp= {newUser, newCredential}
-    res.status(201).json(resp)
-}
+export const createUser = async (req: Request, res: Response) => {
+    try {
+        const { name, email, brithdate, nDni, username, password } = req.body;
+
+        const newUser = await createUserService({ name, email, brithdate, nDni, username, password });
+
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.error('Error al crear usuario:', error);
+        res.status(500).json({ error: 'Hubo un error al crear usuario' });
+    }
+};
 
 export const getAllUsers = async (req:Request, res: Response) => {
     try {

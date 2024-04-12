@@ -1,19 +1,13 @@
 import { Credential } from "../entities/Credentials";
-import {id} from "./userService"
 import ICredentialDto from "../dto/CredentialDto";
 import { CredentialModel, UserModel } from "../config/data-source";
 
-export const createCredentialService = async (credential: ICredentialDto): Promise<Credential> => {
-    const newCredential = await CredentialModel.create(credential);
-    await CredentialModel.save(newCredential)
-    const user = await UserModel.findOneBy({id: credential.userId})
-    if (user) { 
-        user.credential= newCredential
-    await UserModel.save(user)
-    }else {
-        throw Error ("usuario inexistente")
+export const createCredentialService = async (username: string, password: string): Promise<Credential> => {
+    try {
+        const newCredential = await CredentialModel.create({ username, password });
+        await CredentialModel.save(newCredential);
+        return newCredential;
+    } catch (error) {
+        throw new Error("Error al crear la credencial: " );
     }
-    return newCredential;
 }
-
-

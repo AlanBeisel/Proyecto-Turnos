@@ -7,9 +7,9 @@ import { preloadAppointmentsData, preloadCredentialData, preloadUserData,  } fro
 
 const initializeApp = async () => {
     await AppDataSource.initialize()
-    await preloadUserData()
-    await preloadCredentialData()
-    await preloadAppointmentsData();
+    // await preloadUserData()
+    // await preloadCredentialData()
+    // await preloadAppointmentsData();
     server.listen(PORT, () => {
         console.log(`listening on port ${PORT}`)
     })

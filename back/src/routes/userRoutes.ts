@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, getAllUsers, getUserById } from "../controllers/User.Controller";
+import { createUser, getAllUsers, getUserById, loginUser } from "../controllers/User.Controller";
 // import auth from "../middlewares/atenticacion";
 
 const router: Router = Router();
@@ -15,7 +15,7 @@ router.post("/register", createUser)
 
 router.get("/:id", getUserById)
 
-router.post("/login",)
+router.post("/login", loginUser )
 
 
 

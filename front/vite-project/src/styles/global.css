@@ -1,5 +1,5 @@
-body {
-    font-family: Arial, sans-serif; 
+#myBody {
+    font-family: Arial, Helvetica, sans-serif; 
     background-color: #ccdcec; 
     margin: 0; 
     padding: 0; 
