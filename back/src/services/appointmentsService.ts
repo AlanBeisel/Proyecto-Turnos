@@ -42,7 +42,7 @@ export const scheduleAppointmentService = async (appointment: AppointmentDto): P
     const newAppointment = await AppointmentModel.create(appointment)
     await queryRunner.manager.save(newAppointment)
 
-    const user = await UserModel.findOneBy({id: appointment.usuarioId})
+    const user = await UserModel.findOneBy({id: appointment.userId})
 
     if(!user) throw Error("Usuario inexistente. No se creo la cita")
     

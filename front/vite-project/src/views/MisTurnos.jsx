@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import {useSelector} from 'react-redux'
 import { validateRequired, validateDate, validateTime } from '../../helpers/validations'; 
 import Turno from '../components/Turno';
 
@@ -13,6 +14,10 @@ const MisTurnos = () => {
     time: '',
     descripcion: ''
   });
+
+
+  const userId = useSelector(state => state.auth.userId);
+
 
   useEffect(() => {
     fetchTurnos();
@@ -27,15 +32,16 @@ const MisTurnos = () => {
     }
   };
 
-  const addAppointment = () => {
-    setShowForm((prevShowForm) => !prevShowForm);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await axios.post('http://localhost:3000/appointment/nuevo', newTurnoData);
+       
+      const turnoDataWithUserId = {
+        ...newTurnoData,
+        userId: userId
+      };
+        const response = await axios.post('http://localhost:3000/appointment/nuevo', turnoDataWithUserId);
         console.log('Respuesta del servidor:', response.data);
         fetchTurnos();
         setShowForm(false);
@@ -49,6 +55,7 @@ const MisTurnos = () => {
       }
     }
   };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,9 +94,34 @@ const MisTurnos = () => {
     return valid;
   };
 
+
+  // const cancelTurno = async (id) => {
+  //   const confirmCancel = window.confirm(
+  //     "¿Estás seguro de que deseas cancelar este turno?"
+  //   );
+  //   if (confirmCancel) {
+  //     try {
+  //       await axios.put(`http://localhost:3000/appointment/cancel/${id}`);
+  //       // Actualiza el estado del turno para reflejar la cancelación
+  //       setTurnos(turnos.map(turno => {
+  //         if (turno.id === id) {
+  //           return { ...turno, status: 'Cancelado' };
+  //         }
+  //         return turno;
+  //       }));
+  //     } catch (error) {
+  //       console.error('Error al cancelar el turno:', error);
+  //     }
+  //   }
+  // };
+
   return (
     <>
       <h1>Mis turnos:</h1>
+
+      <Button variant="primary" onClick={() => setShowForm(prevShowForm => !prevShowForm)}>
+  {showForm ? 'Cancelar' : 'Nuevo Turno'}
+</Button>
      
       {showForm && (
         <Form onSubmit={handleSubmit}>
@@ -153,9 +185,6 @@ const MisTurnos = () => {
       <div style={{ backgroundColor: '#f0f0f0', padding: '20px', borderRadius: '10px' }}>
         <p style={{ fontSize: '18px', fontWeight: 'bold' }}>¡No tienes turnos aún!</p>
         <p style={{ fontSize: '16px' }}>Pero puedes solicitar uno ahora mismo.</p>
-        <Button variant="primary" onClick={addAppointment}>
-        {showForm ? 'Cancelar' : 'Solicitar Turno'}
-      </Button>
       </div>
     )}
 
@@ -163,11 +192,12 @@ const MisTurnos = () => {
         {turnos.map((turno) => (
           <Turno
             key={turno.id}
+            id={turno.id}
             date={turno.date}
             time={turno.time}
             status={turno.status}
             descripcion={turno.descripcion}
-            conCancel={() => cancelTurno(turno.id)}
+            onCancel={() => cancelTurno(turno.id)}
           />
         ))}
       </div>

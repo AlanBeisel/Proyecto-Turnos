@@ -7,13 +7,11 @@ import { createCredentialService } from "./credentialService";
 
 export const createUserService = async(userData: UserDto): Promise<User> => {
     try {
-        // Crear la credencial asociada al nuevo usuario
         const newCredential = await createCredentialService(
             userData.username,
             userData.password
         );
         CredentialModel.save(newCredential)
-        // Crear el nuevo usuario con la credencial asociada
         const newUser: User = await UserModel.create({
             name: userData.name,
             email: userData.email,

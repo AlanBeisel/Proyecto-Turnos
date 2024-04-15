@@ -9,7 +9,7 @@ export class Appointment {
     id: number
 
     @Column()
-    usuarioId: number
+    userId: number
 
     @Column()
     date: string

@@ -14,9 +14,7 @@ export const validateRegistration = (formData) => {
     if (!/\d/.test(formData.password)) {
       errors.password = 'La contraseña debe contener al menos un número';
     }
-  
-    // Agregar más validaciones
-  
+
     return errors;
   };
 
@@ -50,6 +48,5 @@ export const validateRegistration = (formData) => {
   };
   
   export const validateTime = (value) => {
-    // Aquí puedes implementar la validación del formato de la hora y el rango permitido
     return true;
   };
