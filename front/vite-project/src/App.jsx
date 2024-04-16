@@ -3,7 +3,7 @@ import './styles/global.css';
 import NavBar from './components/NavBar';
 import Home from './views/Home'
 import Login from "./views/Login";
-import MisTurnos from './views/MisTurnos';
+import MisTurnos from './views/Misturnos';
 import Contacto from './views/Contacto';
 import Register from './views/Register';
 
