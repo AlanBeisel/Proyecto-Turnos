@@ -13,15 +13,17 @@ export const getAllAppointments = async (req: Request, res: Response) => {
 
 export const getAppointmentById = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const appointment = await getAppointmentByIdService(parseInt(id));
-        if (!appointment) {
-            return res.status(404).json({ error: 'Cita no encontrada' });
+        console.log(req.params);
+        
+        const userId = parseInt(req.params.id).toString();
+        const appointments = await getAppointmentByIdService(parseInt(userId));
+        if (!appointments || appointments.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron turnos para este usuario' });
         }
-        res.status(200).json(appointment);
+        res.status(200).json(appointments);
     } catch (error) {
-        console.error('Error al obtener cita por ID:', error);
-        res.status(500).json({ error: 'Hubo un error al obtener cita por ID.' });
+        console.error('Error al obtener turnos por ID de usuario:', error);
+        res.status(500).json({ error: 'Hubo un error al obtener turnos por ID de usuario.' });
     }
 };
 

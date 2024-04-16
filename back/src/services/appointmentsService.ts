@@ -17,17 +17,14 @@ export const getAllAppointmentsService = async (): Promise<Appointment[]> => {
     }
 };
 
-export const getAppointmentByIdService = async (id: number): Promise<Appointment | null> => {
+export const getAppointmentByIdService = async (userId: number): Promise<Appointment[]> => {
     try {
-        const appointment = await AppointmentModel.findOneBy({id});
+        const appointments = await AppointmentModel.find({ where: { userId } });
         
-        if (!appointment) {
-            return null;
-        }
-        return appointment;
+        return appointments;
     } catch (error) {
-        console.error('Error al obtener cita por ID en el servicio:', error);
-        throw new Error('Hubo un error al obtener cita por ID en el servicio.');
+        console.error('Error al obtener turnos por ID de usuario en el servicio:', error);
+        throw new Error('Hubo un error al obtener turnos por ID de usuario en el servicio.');
     }
 };
 

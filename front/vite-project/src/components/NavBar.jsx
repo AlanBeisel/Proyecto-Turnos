@@ -11,7 +11,7 @@ import { logout } from '../redux/reducer'
 const NavBar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn); // Obtener el estado de inicio de sesión desde Redux
-  const dispatch = useDispatch();
+
 
   const handleLoginClick = () => {
     setShowLoginModal(true);
@@ -22,6 +22,7 @@ const NavBar = () => {
   };
 
   const handleLogout = () => {
+    // Despacha la acción de cierre de sesión para actualizar el estado de inicio de sesión
     dispatch(logout());
   };
 
