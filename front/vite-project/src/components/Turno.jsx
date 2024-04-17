@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const Turno = ({ id, date, time, status, descripcion, onCancel }) => {
-  const [isCancelled, setIsCancelled] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(status === 'cancelled');
 
   const handleCancelClick = async () => {
     const confirmCancel = window.confirm(
@@ -12,7 +12,6 @@ const Turno = ({ id, date, time, status, descripcion, onCancel }) => {
     );
     if (confirmCancel) {
       try {
-        // Envía la solicitud para cancelar el turno al backend
         await axios.put(`http://localhost:3000/appointment/cancel/${id}`);
         setIsCancelled(true);
         onCancel();
@@ -31,7 +30,7 @@ const Turno = ({ id, date, time, status, descripcion, onCancel }) => {
         Descripción: {descripcion}
       </div>{' '}
       <Button variant="danger" onClick={handleCancelClick} disabled={isCancelled}>
-        Cancelar Turno
+        {isCancelled ? 'Turno Cancelado' : 'Cancelar Turno'}
       </Button>
     </div>
   );

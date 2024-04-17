@@ -17,11 +17,13 @@ const MisTurnos = () => {
 
 
   const userId = useSelector(state => state.auth.userId);
-
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn); 
 
   useEffect(() => {
-    fetchTurnos();
-  }, [userId]); // Solo se ejecuta cuando cambia userId
+    if (isLoggedIn){
+      fetchTurnos();
+    }
+  }, [userId, isLoggedIn]);
 
   const fetchTurnos = async () => {
     try {

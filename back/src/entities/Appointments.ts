@@ -18,7 +18,7 @@ export class Appointment {
     time: string
 
     @Column()
-    status: "active" | "canceled"
+    status: "active" | "cancelled"
     
     @Column()
     descripcion: string

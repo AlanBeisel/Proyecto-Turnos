@@ -2,7 +2,7 @@ interface AppointmentDto {
     userId: number;
     date: string; 
     time: string; 
-    status: "active" | "canceled"; 
+    status: "active" | "cancelled"; 
     descripcion: string; 
 }
 

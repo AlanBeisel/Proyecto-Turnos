@@ -1,11 +1,11 @@
 import {Routes, Route} from "react-router-dom"
-import './styles/global.css';
 import NavBar from './components/NavBar';
 import Home from './views/Home'
 import Login from "./views/Login";
-import MisTurnos from './views/Misturnos';
+import MisTurnos from './views/MisTurnos';
 import Contacto from './views/Contacto';
 import Register from './views/Register';
+import './styles/global.css';
 
 const App = () => {
   return (
@@ -16,8 +16,8 @@ const App = () => {
         <Route path="/misTurn" element={<MisTurnos/>}></Route>
         <Route path='/contacto' element={<Contacto/>}></Route>
         <Route path="/register" element={<Register/>}></Route>
-        <Route path="/login" element={<Login/>}></Route> {/* Agrega la ruta para el componente Login */}
-        <Route path="/home" element={<Home/>}></Route> {/* Agrega la ruta para la página de inicio */}
+        <Route path="/login" element={<Login/>}></Route> 
+        <Route path="/home" element={<Home/>}></Route>
       </Routes>
     </div>
   );

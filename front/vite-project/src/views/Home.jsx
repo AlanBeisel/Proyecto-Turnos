@@ -16,7 +16,7 @@ const Home = () => {
           </p>
           </div>
           <div className="dental-health-container">
-            <h2>Salud Dental</h2>
+            <h2>Salud dental</h2>
             <p>
               La salud dental es fundamental para el bienestar general. Mantener una buena salud 
               bucal ayuda a prevenir enfermedades dentales, como caries y enfermedad de las encías, 

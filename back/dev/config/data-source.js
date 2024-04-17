@@ -12,7 +12,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: "postgres",
     password: "180623",
     database: "henry",
-    dropSchema: true,
+    dropSchema: false,
     synchronize: true,
     logging: false,
     entities: [Users_1.User, Appointments_1.Appointment, Credentials_1.Credential],

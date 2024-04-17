@@ -60,7 +60,7 @@ export const scheduleAppointmentService = async (appointment: AppointmentDto): P
 export const cancelAppointmentService = async (id: number) => {
         const appointment = await AppointmentModel.findOneBy({id});
         if (appointment) {
-            appointment.status = 'canceled'; 
+            appointment.status = 'cancelled'; 
             await AppointmentModel.save(appointment);
         }
         
