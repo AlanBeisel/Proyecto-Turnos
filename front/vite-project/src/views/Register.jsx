@@ -5,15 +5,16 @@ import { validateRegistration } from '../../helpers/validations';
 
 
 const Register = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     name: '',
     email: '',
     brithdate: '',
     nDni: '',
     username: '',
     password: ''
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -38,6 +39,7 @@ const Register = () => {
     .then(response => {
         console.log('Respuesta del servidor:', response.data);
         setSuccessMessage('¡Usuario creado exitosamente!');
+        setFormData(initialFormData);
       })
       .catch(error => {
         console.error('Error al registrar el usuario:', error);

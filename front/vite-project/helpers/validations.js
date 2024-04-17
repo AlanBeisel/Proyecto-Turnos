@@ -26,25 +26,24 @@ export const validateRegistration = (formData) => {
   };
   
   export const validateDate = (value) => {
-    const isValidFormat = /^(\d{2})\/(\d{2})\/(\d{4})$/.test(value);
-    if (!isValidFormat) {
-      return true;
-    }
-  
+   
+
+    const isValidFormat = /^\d{4}-\d{2}-\d{2}$/.test(value);
     const currentDate = new Date();
-  
-    const [day, month, year] = value.split('/');
-    const selectedDate = new Date(`${day}-${month}-${year}`);
-  
-    if (selectedDate <= currentDate) {
+
+    if (!isValidFormat) {
       return false; 
     }
   
+    const [day, month, year] = value.split('/');
+    const selectedDate = new Date(`${year}-${month}-${day}`); 
+  
+    
     if (selectedDate.getDay() === 6 || selectedDate.getDay() === 0) {
       return false;
     }
   
-    return true;
+    return true; 
   };
   
   export const validateTime = (value) => {

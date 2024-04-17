@@ -108,7 +108,7 @@ const MisTurnos = () => {
       {showForm && (
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Fecha:</Form.Label>
+            <Form.Label>Fecha: Recuerda que atendemos de lunes a viernes</Form.Label>
             <Form.Control
               type="date"
               name="date"
